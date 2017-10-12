@@ -7,19 +7,22 @@ class WebsiteController < ApplicationController
     # Get charity or select a random one
     charity = (params[:charity]=="random") ? Charity.random : Charity.find_by(id: params[:charity])
 
+    # Format amount in satang
+    params[:amount] = params[:amount].baht_to_satang
+
     # Check for valid params
-    if params.values_at(:omise_token, :amount).all?(&:present?) &&
-       params[:amount].to_i > 20 && 
+    if params[:omise_token].present? &&
+       params[:amount] > 2000 && 
        charity
 
       if Rails.env.test?
         charge = OpenStruct.new({
-          amount: params[:amount].to_i * 100,
-          paid: (params[:amount].to_i != 999),
+          amount: params[:amount],
+          paid: (params[:amount] != 99900),
         })
       else
         charge = Omise::Charge.create({
-          amount: params[:amount].to_i * 100,
+          amount: params[:amount],
           currency: "THB",
           card: params[:omise_token],
           description: "Donation to #{charity.name} [#{charity.id}]",
