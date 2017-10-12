@@ -2,8 +2,7 @@ class Charity < ActiveRecord::Base
   validates :name, presence: true
 
   def credit_amount(amount)
-    new_total = total + amount
-    update_attribute :total, new_total
+  	with_lock { update_attribute :total, (total + amount) }
   end
 
   # Select a charity at random 
