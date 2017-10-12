@@ -17,7 +17,7 @@
 
   <div>
     <%= label_tag :amount %><br>
-    <%= number_field_tag :amount, 500 %> THB
+    <%= text_field_tag 'payment_amount', '', placeholder: '0.00', id: 'amount' %> THB
   </div>
 
   <% if @token && @token.card.security_code_check %>

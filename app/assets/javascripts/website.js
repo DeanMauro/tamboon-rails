@@ -45,4 +45,15 @@ $(document).on("ready", function () {
 
   });
 
+  $('#amount').on('input', function() {
+    // Remove non-numerical chars & convert to cents
+    let cents = parseFloat($(this).val().replace(/\D/g, ""), 10) / 100;
+    
+    // Format amount with , & .
+    if (cents) 
+      $(this).val(cents.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,"));
+    else
+      $(this).val('');
+  })
+
 });
